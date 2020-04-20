@@ -6,45 +6,52 @@ const rows = canvas.height /scale;
 const columns = canvas.height /scale;
 var snake;
 var circle;
-var dif = 20;
-var interval;
-
+var dif = 60;
+var interval = 1000;
 
 function setupdif()
 {
-    if(player.score%1 == 0 && player.score!=0)
-    {
-        this.dif = 1;
-        console.log("dif autal: " +this.dif);
-    }
+        this.dif = this.dif - 10;
+        console.log("dif atual: " + this.dif);
 }
 
+var snake = new Snake();
+var circle = new Circle();
+var player = new Player();
 function setup(){
-    snake = new Snake();
-    circle = new Circle();
-    player = new Player();
 
-    this.dif = this.dif - 10;
+    //this.dif = this.dif - 1;
 
-    window.setInterval(()=>{
+    interval = window.setInterval(()=>{
 
-    if ( player.score == 2 ) {
-        setup();
-    } else {
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        snake.draw();
-        circle.draw();
-        snake.update();
-        circle.update();
+        this.snake.draw();
+        this.circle.draw();
+        this.snake.update();
+        this.circle.update();
+        console.log("dif atual: " + this.dif);
 
         if((circle.centerY < (snake.y+ 90) && circle.centerY > snake.y) && (circle.centerX < 0))
         {
             circle.xSpeedCircle = +scale;
             circle.update();
             player.score = player.score + 1;
-            setupdif(player.score);
+            setupdif(player.score)
          }
-    }
+
+        window.clearInterval(interval);
+    
+        if ( player.score % 2 == 0 && player.score != 0) 
+        {
+            //setupdif(player.score)
+            setup();
+            //console.log("here");
+        } 
+        else 
+        {
+            setup();
+            //console.log("here");
+        }
 
     //window.clearInterval(interval); 
 
@@ -53,7 +60,6 @@ function setup(){
     ctx.fillText("your dif atual: " + (50-dif), 740, 100);
 
     },this.dif)
-
 };
 
 setup();
